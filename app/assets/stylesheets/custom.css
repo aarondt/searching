@@ -275,3 +275,10 @@ min-height: 50%;}
     background: url(polina.jpg) no-repeat;
     background-size: cover; 
 }
+
+.footer1, .footer-bottom{
+    background: black;
+    color: white;
+    text-align: center;
+    height: 50px;
+}
