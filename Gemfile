@@ -28,6 +28,7 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'kaminari'
 
 gem 'nokogiri'
+gem 'yaml_db', '~> 0.3.0'
 
 
 gem 'mechanize', '~> 2.7', '>= 2.7.4'
