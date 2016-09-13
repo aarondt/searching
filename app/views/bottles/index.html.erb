@@ -1,0 +1,189 @@
+<div class="head-section">
+ <div class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#about">Stay</a></li>
+        <li><a href="#contact" data-toggle="collapse" data-target=".navbar-collapse.in">Close</a></li>
+        <li><a href="#contact" data-toggle="collapse" data-target=".navbar-collapse.in">Close</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
+
+<div class="head-text">
+  
+  <div class="text-center">
+    <h1>Finde den günstigsten Wein</h1>
+    <p class="lead">Vergleiche das Angebot von über 80 Shops mit mehr als 9000 Weinen</p>
+  </div>
+  
+</div><!-- /.container -->
+
+
+
+       
+    
+    <div class="jumbotron">
+        <video loop autoplay muted poster="#" id="bgvid" playsinline autoplay muted>
+  <!-- WCAG general accessibility recommendation is that media such as background video play through only once. Loop turned on for the purposes of illustration; if removed, the end of the video will fade in the same way created by pressing the "Pause" button  -->
+<source src="http://media.istockphoto.com/videos/choosing-wine-video-id519351126" type="video/mp4">
+</video>
+    <div class="container">
+        
+        
+        
+        <div class="search">
+        <h3>Weine. Günstiger.</h3>
+     <div class="formwrapper">
+              <%= form_tag root_path, :method => 'get' do %>
+              <div class="input-group">
+                      <%= text_field_tag :search, params[:search],  class:"form-control", placeholder: "Suchen" %>
+             
+                      <span class="input-group-btn"><%= submit_tag "Suchen", class: "btn btn-primary" %></span>
+                  
+              </div>
+     </div>
+    <div class="controls">
+        <label for="quantity">Kategorie</label>
+        <%= select_tag  :category, options_for_select(@categories) %>
+        <label for="quantity">Menge</label>
+        <%= select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
+        <%= form_tag root_path, :method => 'get' do %>
+        <%= submit_tag "Aktualisieren", class: "btn btn-primary btn-xs" %>
+        <% end %>
+        <% end %>
+    </div>
+    <div class="pages">
+     <ul class="pagination">
+                <%= paginate @flaschen ,:window => 2 %>
+          </ul>
+     </div>
+    </div>
+   </div>
+    </div>
+    
+</div>
+    
+
+    <div class="search-field">
+         <% @flaschen.each do |products| %>
+                <a href=<%= products.product_url %>>
+                    <%end%>
+    
+    
+                 <% @flaschen.each_slice(6) do |products| %>
+                    <div class="row">
+                          <% products.each do |product| %>
+                        <div>
+                            <a href=<%= product.product_url %> title="<%= product.name %>">
+                        <div class="col-lg-2 col-sm-4 col-xs-6 col-md-4">
+                            <div class="thumbnail">
+                                <%= image_tag(product.image_url, class: 'list_image', size: '160x220', alt: product.name) %>
+                                <div class="logo-div"><%= image_tag(Shop.find(product.shop_id).shop_logo, class: 'shop-logo', size: '160x220', alt: 'shop logo') %></div>
+                                <div class="caption">
+                                 <!--<h4 class="pull-right">$24.99</h4>-->
+                                   <div class="product-name"><p> <%= product.name %></p></a></div>
+                                   <div class="price"><p><%= '%.2f' % product.price  %>€</p></div>
+                                   <div class=""><p>
+                                       
+                                <%-# Berechnung vom Gesamtpreis -%>
+                                   <% 
+                                   
+                                    bottle = Shop.find(product.shop_id)
+                                    menge = params[:quantity]
+                                    menge = menge.to_i
+                                    versandkosten = bottle.versandkosten
+                                    if menge != nil
+                                        first_price = menge * product.price
+                                        if bottle.mengenrabatt != nil
+                                           if menge >= bottle.mengenrabatt_menge 
+                                               calc_mengenrabatt = first_price * bottle.mengenrabatt
+                                           else
+                                            calc_mengenrabatt = 0
+                                           end
+                                        else
+                                            calc_mengenrabatt = 0 
+                                        end
+                                        if bottle.verpackungsrabatt_menge != nil 
+                                            if menge >=  bottle.verpackungsrabatt_menge 
+                                                calc_verpackungsrabatt = first_price * bottle.verpackungsrabatt
+                                            else
+                                            calc_verpackungsrabatt = 0
+                                            end
+                                            
+                                        else
+                                            calc_verpackungsrabatt = 0
+                                        end
+                                        
+                                        if bottle.versandkostenfrei_ab_betrag != nil
+                                           if  first_price > bottle.versandkostenfrei_ab_betrag 
+                                               versandkosten = 0
+                                           end
+                                        end
+                                        
+                                        fin_preis = first_price #+ versandkosten - calc_mengenrabatt - calc_verpackungsrabatt
+                                    end%>
+
+                                <% if params[:quantity] != 0 %>
+                                 <table style="width:100%">
+                                              <tr>
+                                                <th>Information</th>
+                                                <th></th>
+                                              </tr>
+                                              <tr>
+                                                <td>Jahrgang:</td>
+                                                <%if product.vintage != nil%>
+                                                <td><%= product.vintage %></td>
+                                                <%else%>
+                                                <td>N/A</td>
+                                                <%end%>
+
+                                              </tr>
+                                              <tr>
+                                                <td>Inhalt:</td>
+                                                <%product.inhalt.gsub("Flaschen", "") %>
+                                                <td><%= product.inhalt %></td>
+                                              </tr>
+                                              <tr>
+                                                <td>€/L:</td>
+                                                <%product.price_per_litre_string.gsub!("/", "") %>
+                                                <%product.price_per_litre_string.gsub!("L", "") %>
+                                                <%product.price_per_litre_string.gsub!("EUR", "") %>
+                                                <%product.price_per_litre_string.gsub!("€", "") %>
+                                                <%product.price_per_litre_string.gsub!("1l", "") %>
+                                                <td><%= product.price_per_litre_string %>€</td>
+                                              </tr>
+                                            </table> 
+                                
+                                
+                                    <div><p>Menge: <%=params[:quantity]%></p></div>
+                                    <div><p>Versandkosten:<%=versandkosten%>€</p></div>
+                                    <div><p>Gesamtpreis: <%= '%.2f' % fin_preis%>€</p></div>
+                                        
+                                <%end%></p></div>
+                                    
+                                   
+                                    
+                                    
+                                </div>
+                               </div>
+                            </div>
+                        </div>
+        <%end%>
+                      </div>
+                        <%end%>
+                    </div>
+                </div>
+    </div>
+
+</div>

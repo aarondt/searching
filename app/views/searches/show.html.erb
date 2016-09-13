@@ -1,0 +1,43 @@
+<h1>Suchergebnisse</h1>
+<p><%= link_to "Zurück", new_search_path %></p>
+
+<% if @search.search_wines.empty? %>
+<p>Keine Ergebnisse gefunden</p>
+
+<% else %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Image url</th>
+      <th>Price</th>
+      <th>Vintage</th>
+      <th>Link</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% @search.search_wines.each do |wein| %>
+    
+    <tr>
+        <td><%= wein.name %></td>
+        <td><%= image_tag(wein.image_url, :alt => wein.image_url, :class => "img_preview") %></td>
+        <td><%= image_tag(wein.shop.shop_logo, :alt => "shop-logo", :class => "img_preview") %></td>
+        <td><%= "%.2f" % wein.price  %></td>
+        <td><%= wein.vintage %></td>
+        <td><%= link_to "Zum Shop", wein.product_url %></td>
+    <tr>
+   
+    
+  
+    
+<% end %>
+</tbody>
+  </table>
+<br>
+<% end %>
+
+
+
