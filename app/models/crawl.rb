@@ -2373,12 +2373,12 @@ end
 
 
 def crawl_exe
-    rewe_rot()
-    rewe_weiss()
+    #rewe_rot()
+    #rewe_weiss()
     delinero_rot()
     delinero_weiss()
-    vinos_rot()
-    vinos_weiss()
+   # vinos_rot()
+    #vinos_weiss()
     hawesko_rot()
     hawesko_weiss()
     weinzeche_rot()

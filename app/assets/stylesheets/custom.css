@@ -67,12 +67,13 @@ font-size: 21px;
     height: auto;
 }
 
-.jumbotron h3{
+.jumbotron h1{
      font-family: 'Rock Salt', cursive;
-    color: white;
+    color: white !important;
     font-size: 34px;
     text-align: center;
     margin-bottom: 23px;
+    
     
 }
 
