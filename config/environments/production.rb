@@ -78,6 +78,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   
- config.assets.compile = true
- config.serve_static_files = false
+# config.assets.compile = true
+# config.serve_static_files = false
 end
