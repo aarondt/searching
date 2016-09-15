@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>wein-günstig-kaufen.com</title>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -10,21 +11,18 @@
 
 <%= yield %>
 
+</body>
+
+</body>
+
 <footer class="footer1">
       <div class="container">
      <%= link_to " Impressum |", impressum_path %>
-     <%= link_to " Kontakt ", kontakt_path %>
+     <%= link_to " Kontakt |", kontakt_path %>
+     <%= link_to " Servicebedingung ", servicebedingung_path %>
        
       </div>
     </footer>
 
-
-
-</body>
-
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-<!--footer-->
 
 </html>

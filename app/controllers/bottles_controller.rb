@@ -16,4 +16,7 @@ class BottlesController < ApplicationController
     def kontakt
     end
     
+    def servicebedingungen
+    end
+    
 end
