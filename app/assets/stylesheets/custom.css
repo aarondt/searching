@@ -340,3 +340,17 @@ body {
     margin-top: 4%;
 
 }
+
+.slider {
+    background: url('wine.jpg') !important;
+    background-attachment: fixed !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover !important;
+}
+.overlay{
+    
+    background: rgba(0, 0, 0, 0.46) none repeat scroll 0% 0%;
+
+    
+}
