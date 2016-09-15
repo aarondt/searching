@@ -84,6 +84,7 @@ font-size: 21px;
     webkit-box-shadow: inset 0px 23px 24px -13px rgba(0,0,0,0.95);
 -moz-box-shadow: inset 0px 23px 24px -13px rgba(0,0,0,0.95);
 box-shadow: 0px 23px 24px -13px rgba(0, 0, 0, 0.95) inset;
+min-height: 177px !important;
 }
 
 
@@ -316,4 +317,26 @@ body {
     bottom: 0;
     height: 50px;
     width: 100%;
+}
+
+.nothing-found .span p {
+    text-align: center;
+    margin-top: 50%;
+    color: white;
+    font-size: 18pt;
+    
+}
+
+.nothing-found p {
+    
+    color: white;
+    font-size: 18pt;
+    text-align: center;
+    
+}
+
+.nothing-found{
+    
+    margin-top: 4%;
+
 }

@@ -72,9 +72,15 @@
    </div>
     </div>
     
-</div>
     
+<% if @flaschen.empty? %>
+<div class="search-field">
+    <div class="nothing-found">
+       <span><p>Ihre Suche führte leider zu keinem Ergebnis </p></span> 
+    </div>
+</div>
 
+<% else %>
     <div class="search-field">
          <% @flaschen.each do |products| %>
                 <a href=<%= products.product_url %>>
@@ -125,13 +131,17 @@
                                             calc_verpackungsrabatt = 0
                                         end
                                         
-                                        if bottle.versandkostenfrei_ab_betrag != nil
+                                        if bottle.versandkostenfrei_ab_betrag != nil and !bottle.versandkosten.nil? and !bottle.versandkostenfrei_ab_betrag.nil?
                                            if  first_price > bottle.versandkostenfrei_ab_betrag 
                                                versandkosten = 0
                                            end
+                                        else
+                                            versandkosten = bottle.versandkosten
                                         end
-                                        
-                                        fin_preis = first_price #+ versandkosten - calc_mengenrabatt - calc_verpackungsrabatt
+                                        if versandkosten.nil?
+                                            versandkosten = 0
+                                        end
+                                        fin_preis = first_price + versandkosten #- calc_mengenrabatt#- #calc_verpackungsrabatt
                                     end%>
 
                                 <% if params[:quantity] != 0 %>
@@ -166,8 +176,9 @@
                                             </table> 
                                 
                                 
-                                    <div><p>Menge: <%=params[:quantity]%></p></div>
-                                    <div><p>Versandkosten:<%=versandkosten%>€</p></div>
+                                    <div><p>Menge: 
+                                    <%=params[:quantity]%></p></div>
+                                    <div><p>Versandkosten:<%='%.2f' %versandkosten%>€</p></div>
                                     <div><p>Gesamtpreis: <%= '%.2f' % fin_preis%>€</p></div>
                                         
                                 <%end%></p></div>
@@ -187,3 +198,4 @@
     </div>
 
 </div>
+<%end%>

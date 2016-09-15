@@ -4,6 +4,7 @@ class BottlesController < ApplicationController
          
         @flaschen = Bottle.where(["name LIKE ? AND category LIKE ?","%#{params[:search]}%","%#{params[:category]}%"]).order(price: :ASC).page(params[:page]).per(20)
        
+        params[:quantity] = 1   if params[:quantity].blank?
         @final_price = Bottle.calculate_price(@flaschen, params[:quantity])        
        
        @big_array = @flaschen.zip(@final_price)
