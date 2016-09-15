@@ -10,18 +10,21 @@
 
 <%= yield %>
 
+<footer class="footer1">
+      <div class="container">
+     <%= link_to " Impressum |", impressum_path %>
+     <%= link_to " Kontakt ", kontakt_path %>
+       
+      </div>
+    </footer>
+
+
+
 </body>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 
 <!--footer-->
-<footer class="footer1">
-      <div class="container">
-        <a href="#" class="text-muted">Impressum |</a>
-        <a href="#" class="text-muted"> Kontakt</a>
-      </div>
-    </footer>
-
 
 </html>

@@ -1,0 +1,17 @@
+.infosite p {color:white;}
+
+.infosite h2{ color: white !important;}
+
+body {
+    margin: 0 0 50px !important; /* bottom = footer height */
+}
+.footer1 {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+     background: black;
+    color: white;
+    text-align: center;
+}

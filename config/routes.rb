@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
   root 'bottles#index'
+  get '/impressum' => 'bottles#impressum'
+  get '/kontakt' => 'bottles#kontakt'
   resources :searches
   resources :bottles
   # The priority is based upon order of creation: first created -> highest priority.

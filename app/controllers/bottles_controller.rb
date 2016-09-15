@@ -1,5 +1,4 @@
 class BottlesController < ApplicationController
-    
     def index   
          @categories = Bottle.uniq.pluck(:category)
          
@@ -9,4 +8,11 @@ class BottlesController < ApplicationController
        
        @big_array = @flaschen.zip(@final_price)
     end
+    
+    def impressum
+    end
+    
+    def kontakt
+    end
+    
 end
