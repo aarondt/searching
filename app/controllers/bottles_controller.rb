@@ -19,4 +19,8 @@ class BottlesController < ApplicationController
     def servicebedingungen
     end
     
+    
+    def datenschutz
+    end
+    
 end

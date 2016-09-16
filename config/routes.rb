@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/impressum' => 'bottles#impressum'
   get '/kontakt' => 'bottles#kontakt'
   get '/servicebedingung' => 'bottles#servicebedingungen'
+  get '/datenschutz' => 'bottles#datenschutz'
   resources :searches
   resources :bottles
   # The priority is based upon order of creation: first created -> highest priority.
