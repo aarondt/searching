@@ -2395,6 +2395,145 @@ def leftover
     crawl_new_wein9()
 end 
  
+ 
+def read_xml
+        @weinzeche = Shop.find_or_initialize_by(id: 6, name: "Weinzeche", shop_logo: "https://www.weinzeche.de/skin/frontend/ma_m4u/ma_m4u4/images/logo.png",
+    versandkosten: 7.90, 
+    versandkostenfrei_ab_betrag: 75)
+    @weinzeche.save
+    vintage = []
+    prod_desc = []
+    price = []
+    prod_title =[]
+    taste =[]
+    category = []
+    prod_mhd = []
+    name = []
+    product_url = []
+    image_url = []
+    inhalt = []
+    price_per_litre_string = []
+    farbe = []
+     
+     
+    doc = Nokogiri::XML(open("http://productdata-download.affili.net/affilinet_products_5171_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"))
+    doc.xpath("//Deeplinks//Product").each do |line|
+        line  = line.text
+         product_url << line
+    end 
+    
+    doc.xpath("//Title").each do |line|
+         line  = line.text
+         name << line
+    end 
+    
+    doc.xpath("//DisplayPrice").each do |line|
+         line  = line.text
+         price << line
+    end 
+    
+    doc.xpath("//URL").each do |line|
+        line = line.text
+         image_url << line
+    end
+    doc.xpath("//Properties//Property[2]/@Text").each do |line|
+         line = line.text
+        if line.include? "ros" or line.include? "wei"or line.include? "wei"
+            p line
+         farbe << line
+        else
+            farbe << "n/a"
+        end
+        # else
+         #inhalt << "n/a"
+        # end 
+    end
+    p inhalt
+    p product_url.length
+    p name.length
+    p price
+    p image_url.length
+    p inhalt.length
+    
+    
+    
+     #vintage aus name
+    name.each do |line|
+        if line.scan(/\b\d{4}\b/)
+            line = line.scan(/\b\d{4}\b/).first
+                if !line.nil? and line != "" and line.include? "20"
+                    $check2 = 1
+                    vintage << line
+                else
+                    vintage << "n/a"
+                end 
+        else
+            vintage << "n/a"
+        end
+    end
+                
+    count =  name.length  
+    count.times do |i|
+        p "do it!"
+        wein = @weinzeche.bottles.find_or_initialize_by(product_url: product_url[i])
+        p "back back"
+        wein.name = name[i]
+        wein.image_url = image_url[i]
+        wein.product_url = product_url[i]
+        wein.price = price[i]
+      # wein.inhalt = inhalt[i]
+        wein.vintage = vintage[i]
+        url =  product_url[i]
+        url = url.sub("?tracid=affilinet&utm_source=Affilinet&utm_medium=Ad&utm_campaign=datafeed","")
+        url = url.sub("http://partners.webmasterplan.com/click.asp?ref=780704&site=14196&type=text&tnb=2&diurl=","")
+        url = url.sub("http","https")
+        p url
+        if url != "" and url != nil 
+         begin
+            innerpage = Nokogiri::HTML(open(url))
+                    innerpage.xpath('//*[@id="product-attribute-specs-table"]/tbody/tr/td').each do |line|
+                        line = line.text
+                        if line.include? " ml"
+                            p "FOUND!!!!!!!!!!"
+                            p line
+                            if line != nil
+                            wein.inhalt = line
+                            end
+                            p line
+                        end 
+                    end 
+            rescue OpenURI::HTTPError => ex
+              puts "Handle missing video here"
+            end 
+            begin
+            innerpage = Nokogiri::HTML(open(url))    
+                   #inhalt      #product-attribute-specs-table > tbody > tr:nth-child(11) > td
+                innerpage.css('#product_addtocart_form > div > div.pvdetail > div.pvdetdesk > div.pl213 > div > div > div.pl2142').each do |line|
+                    if !line.nil?           
+                    line = line.text
+                    p line
+                    wein.price_per_litre_string = line
+                    else
+                    wein.price_per_litre_string = "n/a"
+                    end
+                end 
+            rescue OpenURI::HTTPError => ex
+              puts "Handle missing video here"
+            end 
+        end
+        p "hello"
+      # wein.price_per_litre_string = price_per_litre_string[i]
+        if farbe[i] == "rot"
+        wein.category = "Rotwein"
+        elsif farbe[i] == "weiss"
+        wein.category = "Weißwein"
+        elsif farbe[i] == "rosé"
+        wein.category = "Rosé"
+        end
+        #hawesko_wein.prod_mhd = prod_mhd[i]
+        wein.save
+    end
+end 
 
 #end of all
 end

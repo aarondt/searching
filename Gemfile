@@ -33,7 +33,7 @@ gem 'yaml_db', '~> 0.3.0'
 
 gem 'mechanize', '~> 2.7', '>= 2.7.4'
 
-
+gem 'open_uri_redirections'
 
 gem 'autoprefixer-rails'
 
@@ -41,6 +41,8 @@ gem 'autoprefixer-rails'
 group :production do
   gem 'pg'
 end
+
+
   
 
 # Use ActiveModel has_secure_password

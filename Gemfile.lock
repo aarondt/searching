@@ -98,6 +98,7 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     ntlm-http (0.1.1)
+    open_uri_redirections (0.2.1)
     pg (0.18.4)
     pkg-config (1.1.7)
     rack (1.6.4)
@@ -185,6 +186,7 @@ DEPENDENCIES
   kaminari
   mechanize (~> 2.7, >= 2.7.4)
   nokogiri
+  open_uri_redirections
   pg
   rails (= 4.2.5)
   sass-rails (~> 5.0)
