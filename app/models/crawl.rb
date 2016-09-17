@@ -2488,39 +2488,39 @@ def read_xml
         url = url.sub("http://partners.webmasterplan.com/click.asp?ref=780704&site=14196&type=text&tnb=2&diurl=","")
         url = url.sub("http","https")
         p url
-        if url != "" and url != nil 
-        begin
-            innerpage = Nokogiri::HTML(open(url))
-                    innerpage.xpath('//*[@id="product-attribute-specs-table"]/tbody/tr/td').each do |line|
-                        line = line.text
-                        if line.include? " ml"
-                            p "FOUND!!!!!!!!!!"
-                            p line
-                            if line != nil
-                            wein.inhalt = line
-                            end
-                            p line
-                        end 
-                    end 
-        rescue OpenURI::HTTPError => ex
-              puts "Handle missing video here"
-        end 
-            begin
-            innerpage = Nokogiri::HTML(open(url))    
-                   #inhalt      #product-attribute-specs-table > tbody > tr:nth-child(11) > td
-                innerpage.css('#product_addtocart_form > div > div.pvdetail > div.pvdetdesk > div.pl213 > div > div > div.pl2142').each do |line|
-                    if !line.nil?           
-                    line = line.text
-                    p line
-                    wein.price_per_litre_string = line
-                    else
-                    wein.price_per_litre_string = "n/a"
-                    end
-                end 
-            rescue OpenURI::HTTPError => ex
-              puts "Handle missing video here"
-            end 
-        end
+      #  if url != "" and url != nil 
+       # begin
+       #    innerpage = Nokogiri::HTML(open(url))
+       #            innerpage.xpath('//*[@id="product-attribute-specs-table"]/tbody/tr/td').each do |line|
+       #                line = line.text
+       #                if line.include? " ml"
+       #                    p "FOUND!!!!!!!!!!"
+       #                    p line
+       #                    if line != nil
+       #                    wein.inhalt = line
+       #                    end
+       #                    p line
+       #                end 
+       #            end 
+    #    rescue OpenURI::HTTPError => ex
+       #       puts "Handle missing video here"
+     #   end 
+         #   begin
+         #   innerpage = Nokogiri::HTML(open(url))    
+         #          #inhalt      #product-attribute-specs-table > tbody > tr:nth-child(11) > td
+         #       innerpage.css('#product_addtocart_form > div > div.pvdetail > div.pvdetdesk > div.pl213 > div > div > div.pl2142').each do |line|
+         #           if !line.nil?           
+         #           line = line.text
+         #           p line
+         #           wein.price_per_litre_string = line
+         #           else
+         #           wein.price_per_litre_string = "n/a"
+         #           end
+         #       end 
+         #   rescue OpenURI::HTTPError => ex
+         #     puts "Handle missing video here"
+         #   end 
+      #  end
         p "hello"
       # wein.price_per_litre_string = price_per_litre_string[i]
         if farbe[i] == "rot"
