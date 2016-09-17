@@ -2585,6 +2585,20 @@ def mövenpick_xml
     doc.xpath("//ProductCategoryPath").each do |line|
          line = line.text
             p line
+            
+        if line.include? "Rot"
+        line = "Rotwein"
+        elsif line.include? "Weiss"
+        line = "Weißwein"
+        elsif line.include? "Ros"
+        line = "Rose"
+        elsif line.include? "Schaum"
+        line= "Schaumwein"
+        elsif line.include? "Süss"
+        line = "Süsswein"
+        else
+        line
+        end    
          category << line
     end
     
