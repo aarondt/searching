@@ -2529,6 +2529,8 @@ def read_xml
         wein.category = "Weißwein"
         elsif farbe[i] == "rosé"
         wein.category = "Rose"
+        else
+        wein.category = "n/a"
         end
         #hawesko_wein.prod_mhd = prod_mhd[i]
         wein.save
