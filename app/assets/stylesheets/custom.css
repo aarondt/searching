@@ -85,6 +85,7 @@ font-size: 21px;
 -moz-box-shadow: inset 0px 23px 24px -13px rgba(0,0,0,0.95);
 box-shadow: 0px 23px 24px -13px rgba(0, 0, 0, 0.95) inset;
 min-height: 177px !important;
+
 }
 
 
@@ -395,4 +396,39 @@ html, body {
 
 .datenschutz{
     color: white;
+}
+
+.box{
+    display: flex;
+min-height: 100%;
+flex-direction: column;
+}
+
+
+
+body {
+  flex: 1;
+  border: 1px solid orange;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;  /* to avoid scrollbars */
+}
+.search-field {
+    min-height: 40% !important;
+    height: 52%;
+}
+
+.slider {
+    height: 48%;
+    min-height: 400px;
+}
+.search-field {
+    min-height: 40% !important;
+    flex: auto;
+}
+.wrapper {
+    flex: 1;
 }

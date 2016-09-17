@@ -2489,7 +2489,7 @@ def read_xml
         url = url.sub("http","https")
         p url
         if url != "" and url != nil 
-         begin
+        begin
             innerpage = Nokogiri::HTML(open(url))
                     innerpage.xpath('//*[@id="product-attribute-specs-table"]/tbody/tr/td').each do |line|
                         line = line.text
@@ -2502,9 +2502,9 @@ def read_xml
                             p line
                         end 
                     end 
-            rescue OpenURI::HTTPError => ex
+        rescue OpenURI::HTTPError => ex
               puts "Handle missing video here"
-            end 
+        end 
             begin
             innerpage = Nokogiri::HTML(open(url))    
                    #inhalt      #product-attribute-specs-table > tbody > tr:nth-child(11) > td
