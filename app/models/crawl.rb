@@ -2438,7 +2438,7 @@ def read_xml
     end
     doc.xpath("//Properties//Property[2]/@Text").each do |line|
          line = line.text
-        if line.include? "ros" or line.include? "wei"or line.include? "wei"
+        if line.include? "ros" or line.include? "wei"or line.include? "rot"
             p line
          farbe << line
         else
@@ -2528,7 +2528,7 @@ def read_xml
         elsif farbe[i] == "weiss"
         wein.category = "Weißwein"
         elsif farbe[i] == "rosé"
-        wein.category = "Rosé"
+        wein.category = "Rose"
         end
         #hawesko_wein.prod_mhd = prod_mhd[i]
         wein.save
