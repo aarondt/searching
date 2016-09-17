@@ -408,8 +408,7 @@ flex-direction: column;
 
 body {
   flex: 1;
-  border: 1px solid orange;
-}
+  }
 
 
 html, body {
