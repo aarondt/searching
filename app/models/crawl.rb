@@ -2597,12 +2597,12 @@ def mövenpick_xml
         elsif line.include? "Süss"
         line = "Süsswein"
         else
-        line
+        line = "n/a"
         end    
          category << line
     end
     
-    doc.xpath("//Properties//Property[15]/@Text").each do |line|
+    doc.xpath("//Properties//Property[5]/@Text").each do |line|
          line = line.text
             p line
          inhalt << line
@@ -2644,6 +2644,234 @@ def mövenpick_xml
         wein.save
     end
 end 
+
+def weinversand
+     
+def crawl(url)
+     @weinversand = Shop.find_or_initialize_by(id: 9, name: "Weinversand", shop_logo:"weinversand.gif",versandkosten: 5.90, versandkostenfrei_ab_menge: 13 )
+    @weinversand.save
+    vintage = []
+    prod_desc = []
+    price = []
+    prod_title =[]
+    taste =[]
+    category = []
+    prod_mhd = []
+    name = []
+    product_url = []
+    image_url = []
+    inhalt = []
+    price_per_litre_string = []
+    farbe = []
+    category = []
+    doc = Nokogiri::XML(open(url))
+    doc.xpath("//Deeplinks//Product").each do |line|
+        line  = line.text
+         product_url << line
+    end 
+    
+    doc.xpath("//BasePriceInformation//BasePrice").each do |line|
+         line  = line.text
+         price_per_litre_string << line
+    end 
+    
+    doc.xpath("//Title").each do |line|
+         line  = line.text
+         name << line
+    end 
+    
+    doc.xpath("//DisplayPrice").each do |line|
+         line  = line.text
+         price << line
+    end 
+    
+    doc.xpath("//Images//Img[1]//URL").each do |line|
+        line = line.text
+         image_url << line
+    end
+    doc.xpath("//ProductCategoryPath").each do |line|
+         line = line.text
+            p line
+            
+        if line.include? "Rot"
+        line = "Rotwein"
+        elsif line.include? "Weiss" or "Weiß"
+        line = "Weißwein"
+        elsif line.include? "Ros"
+        line = "Rose"
+        elsif line.include? "Schaum"
+        line= "Schaumwein"
+        elsif line.include? "Süss"
+        line = "Süsswein"
+        else
+        line
+        end    
+         category << line
+    end
+    
+    doc.xpath("//Properties//Property[15]/@Text").each do |line|
+         line = line.text
+            p line
+         inhalt << line
+    end
+    
+
+
+  
+     #vintage aus name
+    name.each do |line|
+        if line.scan(/\b\d{4}\b/)
+            line = line.scan(/\b\d{4}\b/).first
+                if !line.nil? and line != "" and line.include? "20"
+                    $check2 = 1
+                    vintage << line
+                else
+                    vintage << "n/a"
+                end 
+        else
+            vintage << "n/a"
+        end
+    end
+                
+    count =  name.length  
+    count.times do |i|
+        p "do it!"
+        wein = @weinversand.bottles.find_or_initialize_by(product_url: product_url[i])
+        p "back back"
+        wein.name = name[i]
+        wein.image_url = image_url[i]
+        wein.product_url = product_url[i]
+        wein.price = price[i]
+        wein.inhalt = inhalt[i]
+        wein.vintage = vintage[i]
+        wein.category = category[i]
+        wein.price_per_litre_string = price_per_litre_string[i]
+     
+    
+        wein.save
+    end
+end 
+
+url1 = "http://productdata-download.affili.net/affilinet_products_4215_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+url2 = "http://productdata-download.affili.net/affilinet_products_5265_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+
+crawl(url1)
+crawl(url2)
+
+
+end
+
+
+
+
+def weinvorteil
+     
+def crawl(url)
+    @weinvorteil = Shop.find_or_initialize_by(id: 10, name: "Weinvorteil", shop_logo:"weinvorteil.jpg",versandkosten: 4.95, versandkostenfrei_ab_betrag: 130)
+    @weinvorteil.save
+    vintage = []
+    prod_desc = []
+    price = []
+    prod_title =[]
+    taste =[]
+    category = []
+    prod_mhd = []
+    name = []
+    product_url = []
+    image_url = []
+    inhalt = []
+    price_per_litre_string = []
+    farbe = []
+    category = []
+    doc = Nokogiri::XML(open(url))
+    doc.xpath("//Deeplinks//Product").each do |line|
+        line  = line.text
+         product_url << line
+    end 
+    
+    doc.xpath("//BasePriceInformation//BasePrice").each do |line|
+         line  = line.text
+         price_per_litre_string << line
+    end 
+    
+    doc.xpath("//Title").each do |line|
+         line  = line.text
+         name << line
+    end 
+    
+    doc.xpath("//DisplayPrice").each do |line|
+         line  = line.text
+         price << line
+    end 
+    
+    doc.xpath("//Images//Img[1]//URL").each do |line|
+        line = line.text
+         image_url << line
+    end
+    doc.xpath("//ProductCategoryPath").each do |line|
+         line = line.text
+            p line
+            
+        if line.include? "Rot"
+        line = "Rotwein"
+        elsif line.include? "Weiss" or "Weiß"
+        line = "Weißwein"
+        elsif line.include? "Ros"
+        line = "Rose"
+        elsif line.include? "Schaum"
+        line= "Schaumwein"
+        elsif line.include? "Süss"
+        line = "Süsswein"
+        else
+        line
+        end    
+         category << line
+    end
+    
+    doc.xpath("//Properties//Property[14]/@Text").each do |line|
+         line = line.text
+            p line
+         inhalt << line
+    end
+    
+
+
+  
+      doc.xpath("//Properties//Property[17]/@Text").each do |line|
+         line = line.text
+            p line
+     if !line.nil?
+         vintage << line
+     else
+         vintage << "n/a"
+     end
+ end
+                
+    count =  name.length  
+    count.times do |i|
+        p "do it!"
+        wein = @weinvorteil.bottles.find_or_initialize_by(product_url: product_url[i])
+        p "back back"
+        wein.name = name[i]
+        wein.image_url = image_url[i]
+        wein.product_url = product_url[i]
+        wein.price = price[i]
+        wein.inhalt = inhalt[i]
+        wein.vintage = vintage[i]
+        wein.category = category[i]
+        wein.price_per_litre_string = price_per_litre_string[i]
+     
+    
+        wein.save
+    end
+end 
+
+url1 = "http://productdata-download.affili.net/affilinet_products_3831_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+
+crawl(url1)
+
+
+end
 
 
 
