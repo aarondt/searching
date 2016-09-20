@@ -2753,10 +2753,10 @@ def crawl(url)
 end 
 
 url1 = "http://productdata-download.affili.net/affilinet_products_4215_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
-url2 = "http://productdata-download.affili.net/affilinet_products_5265_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+#url2 = "http://productdata-download.affili.net/affilinet_products_5265_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
 
 crawl(url1)
-crawl(url2)
+#crawl(url2)
 
 
 end
