@@ -2875,5 +2875,116 @@ end
 
 
 
+def vinos_xml
+     
+def crawl(url)
+    @vinos = Shop.find_or_initialize_by(id: 11, name: "Vinos", shop_logo:"http://www.vinos.de/skin/frontend/d2c/vinos/images/logo.png",versandkosten: 4.95, versandkostenfrei_ab_betrag: 130)
+    @vinos.save
+    vintage = []
+    prod_desc = []
+    price = []
+    prod_title =[]
+    taste =[]
+    category = []
+    prod_mhd = []
+    name = []
+    product_url = []
+    image_url = []
+    inhalt = []
+    price_per_litre_string = []
+    farbe = []
+    category = []
+    doc = Nokogiri::XML(open(url))
+    doc.xpath("//Deeplinks//Product").each do |line|
+        line  = line.text
+         product_url << line
+    end 
+    
+    doc.xpath("//BasePriceInformation//BasePrice").each do |line|
+         line  = line.text
+         price_per_litre_string << line
+    end 
+    
+    doc.xpath("//Details//Title").each do |line|
+         line  = line.text
+         name << line
+    end 
+    
+    doc.xpath("//DisplayPrice").each do |line|
+         line  = line.text
+         price << line
+    end 
+    
+    doc.xpath("//Images//Img[5]//URL").each do |line|
+        line = line.text
+         image_url << line
+    end
+    doc.xpath("//ProductCategoryPath").each do |line|
+         line = line.text
+            p line
+            
+        if line.include? "Rot"
+        line = "Rotwein"
+        elsif line.include? "Weiss" or "Weiß"
+        line = "Weißwein"
+        elsif line.include? "Ros"
+        line = "Rose"
+        elsif line.include? "Schaum"
+        line= "Schaumwein"
+        elsif line.include? "Süss"
+        line = "Süsswein"
+        else
+        line
+        end    
+         category << line
+    end
+    
+    # doc.xpath("//Properties//Property[14]/@Text").each do |line|
+    #      line = line.text
+    #         p line
+    #      inhalt << line
+    # end
+    
+
+
+  
+      doc.xpath("//Properties//Property[17]/@Text").each do |line|
+         line = line.text
+            p line
+     if !line.nil?
+         vintage << line
+     else
+         vintage << "n/a"
+     end
+ end
+                
+    count =  name.length  
+    count.times do |i|
+        p "do it!"
+        wein = @vinos.bottles.find_or_initialize_by(product_url: product_url[i])
+        p "back back"
+        wein.name = name[i]
+        wein.image_url = image_url[i]
+        wein.product_url = product_url[i]
+        wein.price = price[i]
+        wein.inhalt = inhalt[i]
+        wein.vintage = vintage[i]
+        wein.category = category[i]
+        wein.price_per_litre_string = price_per_litre_string[i]
+     
+    
+        wein.save
+    end
+end 
+
+url1 = "http://productdata-download.affili.net/affilinet_products_4056_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+
+crawl(url1)
+
+
+end
+
+
+
 #end of all
 end
