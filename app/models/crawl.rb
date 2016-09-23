@@ -2985,6 +2985,140 @@ crawl(url1)
 end
 
 
+def vinexus_xml
+     
+def crawl(url)
+    @vinexus = Shop.find_or_initialize_by(id: 12, name: "Vinexus", shop_logo:"vinexus.png",versandkosten: 3.95, versandkostenfrei_ab_betrag: 100)
+    @vinexus.save
+    vintage = []
+    prod_desc = []
+    price = []
+    prod_title =[]
+    taste =[]
+    country = []
+    grape = []
+    category = []
+    prod_mhd = []
+    name = []
+    product_url = []
+    image_url = []
+    inhalt = []
+    price_per_litre_string = []
+    farbe = []
+    category = []
+    doc = Nokogiri::XML(open(url))
+    doc.xpath("//Deeplinks//Product").each do |line|
+        line  = line.text
+         product_url << line
+    end 
+    
+    doc.xpath("//BasePriceInformation//BasePrice").each do |line|
+         line  = line.text
+         price_per_litre_string << line
+    end 
+    
+    doc.xpath("//Details//Title").each do |line|
+         line  = line.text
+         name << line
+    end 
+    
+    doc.xpath("//DisplayPrice").each do |line|
+         line  = line.text
+         price << line
+    end 
+    
+     doc.xpath("//Properties//Property[2]/@Text").each do |line|
+         line  = line.text
+         country << line
+    end 
+    doc.xpath("//Properties//Property[5]/@Text").each do |line|
+         line = line.text
+         line = line.gsub(/\d+/, "")
+         line = line.gsub("%", "")
+         grape << line
+    end 
+    
+    doc.xpath("//Images//Img[5]//URL").each do |line|
+        line = line.text
+         image_url << line
+    end
+    
+     doc.xpath("//Properties//Property[3]/@Text").each do |line|
+        line = line.text
+        line = line.gsub("Flaschen","")
+         inhalt << line
+    end
+    
+    
+    doc.xpath("//CategoryPath//ProductCategoryPath").each do |line|
+         line = line.text
+            p line
+            
+        if line.include? "Rot"
+        line = "Rotwein"
+        elsif line.include? "Weiss"
+        line = "Weißwein"
+        elsif line == "Rosé"
+        line = "Rose"
+        elsif line.include? "Schaum"
+        line= "Schaumwein"
+        elsif line.include? "Süss"
+        line = "Süsswein"
+        else
+        line
+        end    
+         category << line
+    end
+    
+    # doc.xpath("//Properties//Property[14]/@Text").each do |line|
+    #      line = line.text
+    #         p line
+    #      inhalt << line
+    # end
+    
+
+
+  
+      doc.xpath("//Properties//Property[7]/@Text").each do |line|
+         line = line.text
+            p line
+     if !line.nil?
+         vintage << line
+     else
+         vintage << "n/a"
+     end
+ end
+                
+    count =  name.length  
+    count.times do |i|
+        p "do it!"
+        wein = @vinexus.bottles.find_or_initialize_by(product_url: product_url[i])
+        p "back back"
+        wein.name = name[i]
+        wein.grape = grape[i]
+        wein.country = country[i]
+        wein.image_url = image_url[i]
+        wein.product_url = product_url[i]
+        wein.price = price[i]
+        wein.inhalt = inhalt[i]
+        wein.vintage = vintage[i]
+        wein.category = category[i]
+        wein.price_per_litre_string = price_per_litre_string[i]
+        if wein.category != "Feinkost" and wein.category != "Wein Zubehör" and wein.category != "Weinpakete"
+    
+        wein.save
+        end
+    end
+end 
+
+url1 = "http://productdata-download.affili.net/affilinet_products_1100_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+
+crawl(url1)
+
+
+end
+
+
 
 #end of all
 end
