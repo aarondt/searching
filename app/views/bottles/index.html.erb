@@ -36,7 +36,7 @@
      </div>
     <div class="controls">
         <label for="quantity">Kategorie</label>
-        <%= select_tag  :category, options_for_select(@categories) %>
+        <%= select_tag  :category, options_for_select(@categories, params[:category]) %>
         <label for="quantity">Menge</label>
         <%= select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
         <%= form_tag root_path, :method => 'get' do %>

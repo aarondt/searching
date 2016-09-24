@@ -24,4 +24,8 @@ class BottlesController < ApplicationController
     def datenschutz
     end
     
+    def create
+        @auswahl = params[:category]
+    end
+    
 end
