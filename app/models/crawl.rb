@@ -3022,6 +3022,17 @@ def vinexus_xml
              name << line
         end 
         
+        
+        doc.xpath("//Properties//Property[4]").each do |line|
+             line  = line.text
+             grape << line
+        end 
+        
+        doc.xpath("//Properties//Property[2]").each do |line|
+             line  = line.text
+             country << line
+        end 
+        
         doc.xpath("//DisplayPrice").each do |line|
              line  = line.text
              price << line
@@ -3056,7 +3067,7 @@ def vinexus_xml
                 
             if line.include? "Rot"
             line = "Rotwein"
-            elsif line.include? "Weiss" or "Weiß"
+            elsif line.include? "Weiss" or line.include? "Weiß"
             line = "Weißwein"
             elsif line == "Rosé"
             line = "Rose"
@@ -3102,6 +3113,8 @@ def vinexus_xml
             wein.price = price[i]
             wein.inhalt = inhalt[i]
             wein.vintage = vintage[i]
+            wein.grape = grape[i]
+            wein.country = country[i]
             wein.category = category[i]
             wein.price_per_litre_string = price_per_litre_string[i]
             if wein.category != "Feinkost" and wein.category != "Wein Zubehör" and wein.category != "Weinpakete"
