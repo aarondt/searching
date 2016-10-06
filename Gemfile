@@ -39,6 +39,7 @@ gem 'open_uri_redirections'
 
 gem 'autoprefixer-rails'
 
+gem 'rails_12factor'
 
 group :production do
   gem 'pg'
