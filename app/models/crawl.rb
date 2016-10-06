@@ -2695,7 +2695,7 @@ def crawl(url)
             
         if line.include? "Rot"
         line = "Rotwein"
-        elsif line.include? "Weiss" or "Weiß"
+        elsif line.include? "Weiss" or line.include? "Weiß"
         line = "Weißwein"
         elsif line.include? "Ros"
         line = "Rose"
@@ -2814,7 +2814,7 @@ def crawl(url)
             
         if line.include? "Rot"
         line = "Rotwein"
-        elsif line.include? "Weiss" or "Weiß"
+        elsif line.include? "Weiss" or line.include? "Weiß"
         line = "Weißwein"
         elsif line.include? "Ros"
         line = "Rose"
@@ -3200,7 +3200,7 @@ def vinos_xml2
                     
                 if line.include? "Rot"
                 line = "Rotwein"
-                elsif line.include? "Weiss" or "Weiß"
+                elsif line.include? "Weiss" or line.include? "Weiß"
                 line = "Weißwein"
                 elsif line == "Rosé"
                 line = "Rose"
@@ -3390,7 +3390,7 @@ def embrosia
                     
                 if line.include? "Rot"
                 line = "Rotwein"
-                elsif line.include? "Weiss" or "Weiß"
+                elsif line.include? "Weiss" or line.include? "Weiß"
                 line = "Weißwein"
                 elsif line == "Rosé"
                 line = "Rose"
