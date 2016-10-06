@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   
+  resources :search_suggestions
   root 'bottles#index'
   get '/impressum' => 'bottles#impressum'
   get '/kontakt' => 'bottles#kontakt'
   get '/servicebedingung' => 'bottles#servicebedingungen'
   get '/datenschutz' => 'bottles#datenschutz'
+  get "bottles/update_text", as: "update_text"
+    get "bottles/update_category", as: "update_category"
   resources :searches
   resources :bottles
   # The priority is based upon order of creation: first created -> highest priority.

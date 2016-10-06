@@ -666,7 +666,7 @@ def vinos_rot
             #end
             
             #litre_price_string
-             produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div/span[3]').each do |line|
+            produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div/span[3]').each do |line|
                
                 if line.text.include? "/"
                     line = line.text
@@ -2914,6 +2914,7 @@ def crawl(url)
          line  = line.text
          price << line
     end 
+
     
     doc.xpath("//Images//Img[5]//URL").each do |line|
         line = line.text
@@ -2939,12 +2940,7 @@ def crawl(url)
          category << line
     end
     
-    # doc.xpath("//Properties//Property[14]/@Text").each do |line|
-    #      line = line.text
-    #         p line
-    #      inhalt << line
-    # end
-    
+  
 
 
   
@@ -2956,6 +2952,11 @@ def crawl(url)
      else
          vintage << "n/a"
      end
+     
+      
+                 
+     
+     
  end
                 
     count =  name.length  
@@ -2968,6 +2969,8 @@ def crawl(url)
         wein.product_url = product_url[i]
         wein.price = price[i]
         wein.inhalt = inhalt[i]
+        wein.country  =  country[i]
+        wein.grape = grape[i]
         wein.vintage = vintage[i]
         wein.category = category[i]
         wein.price_per_litre_string = price_per_litre_string[i]
@@ -3023,13 +3026,15 @@ def vinexus_xml
         end 
         
         
-        doc.xpath("//Properties//Property[4]").each do |line|
+        doc.xpath("//Properties//Property[4]/@Text").each do |line|
              line  = line.text
+             p line
              grape << line
         end 
         
-        doc.xpath("//Properties//Property[2]").each do |line|
+        doc.xpath("//Properties//Property[2]/@Text").each do |line|
              line  = line.text
+             p line
              country << line
         end 
         
@@ -3038,16 +3043,7 @@ def vinexus_xml
              price << line
         end 
         
-         doc.xpath("//Properties//Property[2]/@Text").each do |line|
-             line  = line.text
-             country << line
-        end 
-        doc.xpath("//Properties//Property[5]/@Text").each do |line|
-             line = line.text
-             line = line.gsub(/\d+/, "")
-             line = line.gsub("%", "")
-             grape << line
-        end 
+    
         
         doc.xpath("//Images//Img[5]//URL").each do |line|
             line = line.text
@@ -3099,6 +3095,8 @@ def vinexus_xml
              vintage << "n/a"
          end
      end
+     
+     
                     
         count =  name.length  
         count.times do |i|
@@ -3127,12 +3125,14 @@ def vinexus_xml
     url1 = "http://productdata-download.affili.net/affilinet_products_1100_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
     
     crawl(url1)
+
 end
 
 
 
 def vinos_xml2
-         
+         url = "http://productdata-download.affili.net/affilinet_products_4056_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+        
          @vinos = Shop.find_or_initialize_by(id: 13, name: "Vinos", shop_logo: "http://www.vinos.de/skin/frontend/d2c/vinos/images/logo.png",
         versandkosten: 0, 
         mindest_bestellmenge: 25, 
@@ -3156,9 +3156,11 @@ def vinos_xml2
         price_per_litre_string = []
         farbe = []
         category = []
-         url = "http://productdata-download.affili.net/affilinet_products_4056_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+        
+    
     
             doc = Nokogiri::XML(open(url))
+    
             doc.xpath("//Deeplinks//Product").each do |line|
                 line  = line.text
                  product_url << line
@@ -3183,6 +3185,7 @@ def vinos_xml2
                  line  = line.text
                  country << line
             end 
+            
            
             
             doc.xpath("//Images//Img[4]//URL").each do |line|
@@ -3210,7 +3213,204 @@ def vinos_xml2
                 end    
                  category << line
             end
+
+###crawling the site ####
+             product_url.each do |line|
+                    produkt_seite = line.gsub("http://partners.webmasterplan.com/click.asp?ref=780704&site=12586&type=text&tnb=33&diurl=","")
+                    produkt_seite = Nokogiri::HTML(open(produkt_seite))
+                    produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div/span[2]/text()').each do |line|
+                            line = line.text
+                            if line.include? "Flasche"
+                                line = line.gsub("Pro Flasche","")
+                                line = line.gsub("(","")
+                                line = line.gsub(")","")
+                                line = line.gsub("\n                                                                                                                                                                                    ","")
+                                line = line.gsub("\n                                                                                    ","")
+                                p line
+                                inhalt << line
+                            else
+                                inhalt << "n/a"
+                               
+                            end
+                    end   
+                    
+                    #vintage   
+                    
+                    vintage_found = 0
+                    produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[2]/h1/text()[2]').each do |line|
+                            line = line.text
+                            line = line.scan(/\d{4}/)
+                            line = line[0]
+                          
+                        if line != nil
+                            vintage << line
+                        end
+                        if line.nil?
+                            line = "n/a"
+                            vintage << line
+                        end
+                      p line
+                    end 
+                  
+                    
+             
+                    
+                     
+                    
+                 country << "Spanien" 
+                            
+                    # produkt_seite.xpath('//*[@id="wineinfo"]/div[1]/dl/dd[14]/a').each do |line|
+                    #      line = line.text
+                    #         p line
+                    #      grape << line
+                    # end
+                    
+                  
+             end 
+   
+       
         
+      
+                    
+        count =  name.length  
+        count.times do |i|
+            
+            
+            
+            
+            
+            p i            
+            wein = @vinos.bottles.find_or_initialize_by(product_url: product_url[i])
+            wein.name = name[i]
+            #wein.grape = grape[i]
+            wein.country = country[i]
+            wein.image_url = image_url[i]
+            wein.product_url = product_url[i]
+            wein.price = price[i]
+            
+            line = product_url[i]
+            produkt_seite = line.gsub("http://partners.webmasterplan.com/click.asp?ref=780704&site=12586&type=text&tnb=33&diurl=","")
+                    produkt_seite = Nokogiri::HTML(open(produkt_seite))
+            
+            produkt_seite.xpath('//*[@id="wineinfo"]/div[1]/dl/dd[last()]/a[1]').each do |line|
+                            line = line.text
+                            grape = "n/a"
+                            if !line.nil?
+                           # line = line.gsub(/ *\d+$/, '')
+                            line = line.gsub("%", '')
+                            line = line.gsub(/\ \d+/, "")
+                            
+                            grape = line
+                            else
+                            line = "n/a"
+                            grape  = line
+                            end
+                            p line
+                    end
+            
+            
+            
+            wein.grape = grape
+            wein.country = country[i]
+            wein.inhalt = inhalt[i]
+            wein.vintage = vintage[i]
+            wein.category = category[i]
+            wein.price_per_litre_string = price_per_litre_string[i]
+        
+          wein.save
+        end
+end
+
+
+
+def embrosia
+         
+         @ebrosia = Shop.find_or_initialize_by(id: 14, name: "Ebrosia", shop_logo: "http://www.vinos.de/skin/frontend/d2c/vinos/images/logo.png",
+        versandkosten: 0, 
+        mindest_bestellmenge: 25, 
+        verpackungsrabatt: 0.03,
+        mengenrabatt: 0.03,
+        mengenrabatt_menge: 18)
+        @ebrosia.save
+        vintage = []
+        prod_desc = []
+        price = []
+        prod_title =[]
+        taste =[]
+        country = []
+        grape = []
+        category = []
+        prod_mhd = []
+        name = []
+        product_url = []
+        image_url = []
+        inhalt = []
+        price_per_litre_string = []
+        farbe = []
+        category = []
+         url = "http://productdata-download.affili.net/affilinet_products_172_780704.XML?auth=8xzaOSrjDtJfgt8cNIks&type=XML"
+        
+    def crawl(url)
+            doc = Nokogiri::XML(open(url))
+            doc.xpath("//Deeplinks//Product").each do |line|
+                line  = line.text
+                 product_url << line
+            end 
+            
+            doc.xpath("//BasePriceInformation//BasePrice").each do |line|
+                 line  = line.text
+                 price_per_litre_string << line
+            end 
+            
+            doc.xpath("//Details//Title").each do |line|
+                 line  = line.text
+                 name << line
+            end 
+            
+            doc.xpath("//DisplayPrice").each do |line|
+                 line  = line.text
+                 price << line
+            end 
+            
+            # doc.xpath("//Properties//Property[2]/@Text").each do |line|
+                # line  = line.text
+                # country << line
+            #end 
+           
+            
+            doc.xpath("//Images//Img[4]//URL").each do |line|
+                line = line.text
+                 image_url << line
+            end
+            
+            
+             doc.xpath("//Keywords").each do |line|
+                 line = line.text
+                 #   p line
+                    
+                if line.include? "Rot"
+                line = "Rotwein"
+                elsif line.include? "Weiss" or "Weiß"
+                line = "Weißwein"
+                elsif line == "Rosé"
+                line = "Rose"
+                elsif line.include? "Schaum"
+                line= "Schaumwein"
+                elsif line.include? "Süss"
+                line = "Süsswein"
+                elsif line.include? "Sekt"
+                line = "Sekt"
+                elsif line.include? "Champag"
+                line = "Champagner"
+                else
+                line = "dont save"
+                end    
+                 category << line
+            end
+   
+        
+        
+      
             
           
        
@@ -3219,41 +3419,20 @@ def vinos_xml2
                 
             
         
-        
-        
-        #######################################
-       
-            
-            #  #vintage           
-            # produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[2]/h1/text()[2]').each do |line|
-            #     line = line.text
-            #     line = line.scan(/\d{4}/)
-            #     line = line[0]
-            #   p line
-            # if line != nil
-            #     vintage << line
-            # elsif line.nil?
-            #     vintage << "n/a"
-            # end
-            # end
-            
-             #litre_price_string
              product_url.each do |line|
-             produkt_seite = line.gsub("http://partners.webmasterplan.com/click.asp?ref=780704&site=12586&type=text&tnb=33&diurl=","")
+             produkt_seite = line.gsub("http://partners.webmasterplan.com/click.asp?ref=780704&site=3555&type=text&tnb=25&diurl=","")
+                p produkt_seite           
             produkt_seite = Nokogiri::HTML(open(produkt_seite))
-            produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div/span[2]/text()').each do |line|
-                line = line.text
-                if line.include? "Flasche"
-                    line = line.gsub("Pro Flasche","")
-                    line = line.gsub("(","")
-                    line = line.gsub(")","")
-                    line = line.gsub("\n                                                                                                                                                                                    ","")
-                    line = line.gsub("\n                                                                                    ","")
-                    p line
-                    inhalt << line
-                   
-                end
-            end   
+                      p line
+                    produkt_seite.xpath(' //*[@id="wineinfo"]/div[1]/dl/dd[12]/text()').each do |line|
+                            line = line.text
+                                                                                                      
+                                p line
+                                grape << line
+                               
+                        
+                    end   
+              
             
             #vintage           
             produkt_seite.xpath('//*[@id="product-view"]/div[1]/div/div/div[2]/h1/text()[2]').each do |line|
@@ -3279,7 +3458,9 @@ def vinos_xml2
             country << "Spanien"
         end 
         
-        
+      end  
+      
+        crawl(url)
       
                     
         count =  name.length  
@@ -3291,7 +3472,7 @@ def vinos_xml2
             
             
             p "do it!"
-            wein = @vinos.bottles.find_or_initialize_by(product_url: product_url[i])
+            wein = @ebrosia.bottles.find_or_initialize_by(product_url: product_url[i])
             p "back back"
             wein.name = name[i]
             #wein.grape = grape[i]
@@ -3303,10 +3484,13 @@ def vinos_xml2
             wein.vintage = vintage[i]
             wein.category = category[i]
             wein.price_per_litre_string = price_per_litre_string[i]
-        
-          wein.save
+         if wein.category != "dont save"
+            wein.save
+         end
 end
 end
+
+
 
 
 #end of all

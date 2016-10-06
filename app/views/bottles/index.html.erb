@@ -9,7 +9,7 @@
   
 </div><!-- /.container -->
 
-
+ 
 
        
     
@@ -28,21 +28,92 @@
      <div class="formwrapper">
               <%= form_tag root_path, :method => 'get' do %>
               <div class="input-group">
-                      <%= text_field_tag :search, params[:search],  class:"form-control", placeholder: "Suchen" %>
-             
+                     
+                     <%= text_field_tag :search, params[:search],  class:"form-control", placeholder: "Suchen", data: {autocomplete_source: @data} %>
                       <span class="input-group-btn"><%= submit_tag "Suchen", class: "btn btn-primary" %></span>
-                  
+      
+       <script>
+  var src =  $('#search').data('autocomplete-source')
+  $( function() {
+    
+    $( "#search" ).autocomplete({
+      
+      source: function(request, response) {
+        var results = $.ui.autocomplete.filter(src, request.term);
+        
+        response(results.slice(0, 10));
+    }
+    });
+  } );
+  
+  
+ 
+  </script>
+
+
+
+        
+
+
+ 
+        
+
+        
+        
               </div>
      </div>
     <div class="controls">
-        <label for="quantity">Kategorie</label>
-        <%= select_tag  :category, options_for_select(@categories, params[:category]) %>
+        <p><%= $selected_category%></p>
+<%= form_tag("filter", :id => "filter_form", :method => "post") do %>
+<label for="kategorie" class="kategorie">Kategorie:</label> <%=  select_tag :category,
+      options_for_select(Bottle.pluck(:category).uniq.sort_by!{ |e| e.downcase }, params[:category]),
+      { include_blank: 'Alle Kategorien' }%>
+  <label for="country" class="country">Herkunft:</label> <%=  select_tag :country,
+      options_for_select(Bottle.pluck(:country).uniq.sort_by!{ |e| e.downcase }, params[:country]),
+      { include_blank: 'Alle Länder' }%>
+  <label for="grape" class="grape">Rebsorte:</label> <%=  select_tag :grape,
+      options_for_select(Bottle.pluck(:grape).uniq.sort_by!{ |e| e.downcase }, params[:grape]),
+      { include_blank: "Alle Rebsorten" }%>
+
+  
+ <script>
+  $(document).ready(function() {
+    $('#country').change(function() {
+        var category_na = $("#category option:selected").text();
+        $.ajax({
+           url: "<%= update_text_path %>",
+           data: {
+               country_name: $("#country option:selected").text(), category_name: category_na
+           },
+           dataType: "script"
+        });
+        
+        
+       
+    });
+    
+    
+    
+    $('#category').change(function() {
+        var country_name  = $("#country option:selected").text();
+        $.ajax({
+           url: "<%= update_category_path %>",
+           data: {
+               category_name: $("#category option:selected").text(), country_name: country_name
+           },
+           dataType: "script"
+        });
+    });
+  });
+</script>   
+        
         <label for="quantity">Menge</label>
         <%= select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
         <%= form_tag root_path, :method => 'get' do %>
-        <%= submit_tag "Aktualisieren", class: "btn btn-primary btn-xs" %>
+       <div class="btn btn-primary btn-xs", id="clear">Clear</div>
         <% end %>
         <% end %>
+<% end %>
     </div>
     <div class="pages">
      <ul class="pagination">
@@ -59,7 +130,7 @@
 <% if @flaschen.empty? %>
 <div class="search-field">
     <div class="nothing-found">
-       <span><p>Ihre Suche führte leider zu keinem Ergebnis </p></span> 
+       <span><p>Ihre Suche nach "<%=params[:search]%>" führte leider zu keinem Ergebnis </p></span> 
     </div>
 </div>
 
@@ -137,6 +208,24 @@
                                                 <td>Jahrgang:</td>
                                                 <%if product.vintage != nil%>
                                                 <td><%= product.vintage %></td>
+                                                <%else%>
+                                                <td>N/A</td>
+                                                <%end%>
+
+                                              </tr>
+                                               <tr>
+                                                <td>Rebsorte:</td>
+                                                <%if product.grape != nil%>
+                                                <td><%= product.grape %></td>
+                                                <%else%>
+                                                <td>N/A</td>
+                                                <%end%>
+
+                                              </tr>
+                                              <tr>
+                                                <td>Land:</td>
+                                                <%if product.country != nil%>
+                                                <td><%= product.country %></td>
                                                 <%else%>
                                                 <td>N/A</td>
                                                 <%end%>

@@ -25,11 +25,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bootstrap-sass', '~> 3.3.6'
 
+gem 'rails4-autocomplete'
+
+
 gem 'kaminari'
 
 gem 'nokogiri'
 gem 'yaml_db', '~> 0.3.0'
 
+
+gem 'jquery-ui-rails'
 
 gem 'mechanize', '~> 2.7', '>= 2.7.4'
 
