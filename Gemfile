@@ -41,7 +41,7 @@ gem 'mechanize', '~> 2.7', '>= 2.7.4'
 gem 'open_uri_redirections'
 
 gem 'autoprefixer-rails'
-
+gem  'rails_12factor'
 
 group :production do
   gem 'pg'
