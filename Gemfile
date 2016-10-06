@@ -25,9 +25,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bootstrap-sass', '~> 3.3.6'
 
-gem 'rails4-autocomplete'
-
-
 gem 'kaminari'
 
 gem 'nokogiri'
@@ -41,7 +38,7 @@ gem 'mechanize', '~> 2.7', '>= 2.7.4'
 gem 'open_uri_redirections'
 
 gem 'autoprefixer-rails'
-gem  'rails_12factor'
+
 
 group :production do
   gem 'pg'
