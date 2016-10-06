@@ -65,7 +65,15 @@
     <div class="controls">
      
 <%= form_tag("filter", :id => "filter_form", :method => "post") do %>
-
+<label for="kategorie" class="kategorie">Kategorie:</label> <%=  select_tag :category,
+      options_for_select(Bottle.pluck(:category).uniq.sort_by!{ |e| e.downcase }, params[:category]),
+      { include_blank: 'Alle Kategorien' }%>
+  <label for="country" class="country">Herkunft:</label> <%=  select_tag :country,
+      options_for_select(Bottle.pluck(:country).uniq.sort_by!{ |e| e.downcase }, params[:country]),
+      { include_blank: 'Alle Länder' }%>
+  <label for="grape" class="grape">Rebsorte:</label> <%=  select_tag :grape,
+      options_for_select(Bottle.pluck(:grape).uniq.sort_by!{ |e| e.downcase }, params[:grape]),
+      { include_blank: "Alle Rebsorten" }%>
 
   
  <script>
