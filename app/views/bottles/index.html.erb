@@ -63,7 +63,7 @@
               </div>
      </div>
     <div class="controls">
-        <p><%= $selected_category%></p>
+     
 <%= form_tag("filter", :id => "filter_form", :method => "post") do %>
 <label for="kategorie" class="kategorie">Kategorie:</label> <%=  select_tag :category,
       options_for_select(Bottle.pluck(:category).uniq.sort_by!{ |e| e.downcase }, params[:category]),
