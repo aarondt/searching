@@ -110,7 +110,7 @@
         <label for="quantity">Menge</label>
         <%= select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
         <%= form_tag root_path, :method => 'get' do %>
-       <div class="btn btn-primary btn-xs", id="clear">Clear</div>
+       <div class="btn btn-primary btn-xs", id="clear">Zurücksetzen</div>
         <% end %>
         <% end %>
 <% end %>
