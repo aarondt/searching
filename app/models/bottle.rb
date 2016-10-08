@@ -24,6 +24,9 @@ class Bottle < ActiveRecord::Base
      bottle = Bottle.all
     if search != ""
     bottle = bottle.where(["lower(name) LIKE ?", "%#{search}%"]) if search.present?
+    bottle = bottle.where(["category LIKE ?", category]) if category.present? and category != "Alle Kategorien"
+    bottle = bottle.where(["country LIKE ?", country]) if country.present? and country != "Alle Länder"
+    bottle = bottle.where(["grape LIKE ?", grape]) if grape.present? and grape != "Alle Rebsorten"
     else
     bottle = bottle.where(["category LIKE ?", category]) if category.present? and category != "Alle Kategorien"
     bottle = bottle.where(["country LIKE ?", country]) if country.present? and country != "Alle Länder"

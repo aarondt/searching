@@ -196,6 +196,7 @@ label {
     -webkit-box-shadow: 9px 10px 6px -4px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 9px 10px 6px -4px rgba(0, 0, 0, 0.75);
     box-shadow: 9px 10px 6px -4px rgba(0, 0, 0, 0.75);
+    height: 600px;
 }
 
 .jumbotron {
@@ -413,4 +414,8 @@ body {
 
 #grape{
        width: 172px; 
+}
+
+.price-calculation table{
+    font-size: 13px !important;
 }

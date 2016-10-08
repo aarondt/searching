@@ -112,10 +112,10 @@
   });
 </script>   
         
-        <label for="quantity">Menge</label>
-        <%= select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
+       <!-- <label for="quantity">Menge</label> -->
+        <% #select_tag :quantity, options_for_select(1..50, params[:quantity]) %>
         <%= form_tag root_path, :method => 'get' do %>
-       <div class="btn btn-primary btn-xs", id="clear">Zurücksetzen</div>
+       <div class="btn btn-primary btn-xs", id="clear">Zurücksetzen</div> 
         <% end %>
         <% end %>
 <% end %>
@@ -238,25 +238,30 @@
                                               </tr>
                                               <tr>
                                                 <td>Inhalt:</td>
-                                                <%product.inhalt.gsub("Flaschen", "") %>
+                                                
+                                                <% if !product.inhalt.nil?
+                                                product.inhalt.gsub("Flaschen", "") 
+                                                end%>
                                                 <td><%= product.inhalt %></td>
                                               </tr>
                                               <tr>
                                                 <td>€/L:</td>
+                                                 <% if !product.price_per_litre_string.nil? %>
                                                 <%product.price_per_litre_string.gsub!("/", "") %>
                                                 <%product.price_per_litre_string.gsub!("L", "") %>
                                                 <%product.price_per_litre_string.gsub!("EUR", "") %>
                                                 <%product.price_per_litre_string.gsub!("€", "") %>
                                                 <%product.price_per_litre_string.gsub!("1l", "") %>
+                                                 <%end%>
                                                 <td><%= product.price_per_litre_string %>€</td>
                                               </tr>
                                             </table> 
                                 
                                 
-                                    <div><p>Menge: 
-                                    <%=params[:quantity]%></p></div>
-                                    <div><p>Versandkosten:<%='%.2f' %versandkosten%>€</p></div>
-                                    <div><p>Gesamtpreis: <%= '%.2f' % fin_preis%>€</p></div>
+                                   <!-- <div><p>Menge: 
+                                    <%#params[:quantity]%></p></div>
+                                    <div><p>Versandkosten: <%#'%.2f' %versandkosten%>€</p></div>
+                                    <div><p>Gesamtpreis: <%#'%.2f' % fin_preis%>€</p></div> -->
                                         
                                 <%end%></p></div>
                                     

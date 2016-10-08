@@ -10,7 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require autocomplete-rails
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require jquery
